@@ -1,0 +1,9 @@
+---
+# tasks file for php 
+
+- name: installing php substitutes
+  package: name=php.* state=present
+
+- name: installing php-mysql
+  package: name=php-mysql state=present
+

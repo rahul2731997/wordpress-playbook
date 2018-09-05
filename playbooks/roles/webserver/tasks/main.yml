@@ -1,0 +1,30 @@
+---
+# tasks file for webserver
+- name: installing epel-release
+  package: name=epel-release state=present
+
+- name: installing httpd
+  package: name=httpd state=present 
+
+- name: adding port
+  firewalld:
+    service: http
+    permanent: true
+    state: enabled
+
+- name: installing git
+  package: name=git state=present
+
+- name: installing php
+  package: name=php.* state=present
+
+- name: installing php-mysql
+  package: name=php-mysql state=present
+
+- name: inserting line in db.properties
+  lineinfile:
+    path: /var/www/html/db.properties
+    regexp: '^(.*)= "192.168.1.10"(.*)$'
+    line: '$host = "192.168.239.7"'
+    
+

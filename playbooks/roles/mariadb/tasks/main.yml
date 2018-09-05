@@ -1,0 +1,30 @@
+---
+# tasks file for mariadb
+- name: unistall maria
+  package: name=mariadb-server state=absent
+- name: INSTALLING MARIADB
+  package: name=mariadb-server state=present
+
+- name: INSTALLING PYTHON PIP
+  package: name=python-pip state=present
+
+- name: INSTALLING MYSQL-PYTHON
+  package: name=MySQL-python state=present
+
+- name: STARTING MARIADB
+  service: name=mariadb.service state=started enabled=yes
+
+- name: creating database
+  mysql_db: name=wordpress state=present
+
+- name: CREATING USERS
+  mysql_user: name=rahul password=qwerty priv=wordpress.**:ALL host={{ item }} state=present
+  with_items:
+    - 192.168.239.4
+    - 192.168.239.5
+
+- name: ADDING PORT
+  firewalld:
+    port: 3306/tcp
+    permanent: true
+    state: enabled

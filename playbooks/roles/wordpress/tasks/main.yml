@@ -1,0 +1,26 @@
+---
+# tasks file for wordpress
+
+- name: EXTRACTING TAR TO HTML PATH
+  unarchive: 
+    src: http://wordpress.org/latest.tar.gz
+    dest: /var/www/html
+    remote_src: yes
+
+- name: moving sample to wp-config.php
+  command: mv /var/www/html/wordpress/wp-config-sample.php /var/www/html/wordpress/wp-config.php 
+
+- name: Update WordPress config file
+  lineinfile:
+    dest: /var/www/html/wordpress/wp-config.php
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', 'wordpress');"}
+    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', 'rahul');"}
+    - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', 'qwerty');"} 
+    - {'regexp': "define\\('DB_HOST', '(.)+'\\);", 'line': "define('DB_HOST', '192.168.239.7');"}
+
+
+
+

@@ -1,0 +1,22 @@
+---
+- hosts: web
+  roles:
+    - webserver
+  tasks:
+    - name: restarting httpd
+      service: name=httpd state=restarted
+    - name: restarting firewalld
+      service: name=firewalld state=restarted 
+    - selinux: state=disabled
+
+- hosts: db
+  roles:
+    - database
+  tasks:
+    - name: restarting mariadb
+      service: name=mariadb.service state=restarted
+    - name: restarting firewalld
+      service: name=firewalld state=restarted  
+    - selinux: state=disabled
+
+

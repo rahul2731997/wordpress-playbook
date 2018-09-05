@@ -1,0 +1,4 @@
+---
+# tasks file for phpmyadmin
+- name: installing phpmyadmin
+  package: name=phpmyadmin state=present
