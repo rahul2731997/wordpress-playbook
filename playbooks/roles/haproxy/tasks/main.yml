@@ -1,2 +1,29 @@
 ---
 # tasks file for haproxy
+
+- name: install haproxy
+  yum: name=haproxy state=present
+
+- name: uncommenting line in rsyslog
+  lineinfile:
+    dest: /etc/rsyslog.conf
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  with_items:
+    - {'regexp': "#$ModLoad imudp", 'line': "$ModLoad imudp"} 
+    - {'regexp': "#$UDPServerRun 514", 'line': "$UDPServerRun 514"}
+
+- name: restarting rsyslog
+  service: name=rsyslog state=restarted
+
+- name: configure haproxy
+  template: src=haproxy.cfg.j2 dest=/etc/haproxy/haproxy.cfg
+
+- name: start haproxy
+  service: name=haproxy state=started enabled=yes
+
+- name: adding haproxy port
+  firewalld:
+    port: 514/tcp
+    permanent: true
+    state: enabled

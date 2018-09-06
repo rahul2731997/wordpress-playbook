@@ -2,6 +2,9 @@
 - hosts: all
   roles:
     - common
+- hosts: haproxy
+  roles:
+    - haproxy
 - hosts: web
   roles:
     - php
@@ -29,3 +32,11 @@
   tasks:
     - name: restart httpd
       service: name=httpd state=restarted
+- hosts: haproxy
+  tasks:
+    - name: restarting haproxy
+      service: name=haproxy state=restarted
+    - name: disabling selinux
+      selinux: state=disabled
+    - name: stopping firewalld
+      service: name=firewalld state=stopped

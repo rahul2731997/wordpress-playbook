@@ -1,7 +1,6 @@
 ---
 # tasks file for mariadb
-- name: unistall maria
-  package: name=mariadb-server state=absent
+
 - name: INSTALLING MARIADB
   package: name=mariadb-server state=present
 
@@ -20,8 +19,8 @@
 - name: CREATING USERS
   mysql_user: name=rahul password=qwerty priv=wordpress.**:ALL host={{ item }} state=present
   with_items:
-    - 192.168.239.4
-    - 192.168.239.5
+    - 192.168.43.140
+    - 192.168.43.115
 
 - name: ADDING PORT
   firewalld:

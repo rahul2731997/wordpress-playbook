@@ -1,7 +1,5 @@
 ---
 # tasks file for httpd
-- name: uninstalling httpd
-  package: name=httpd state=absent
 
 - name: installing httpd
   package: name=httpd state=present
@@ -16,11 +14,12 @@
     state: enabled
     zone: public
 
+- name: starting firewalld
+  service: name=firewalld state=started
+
 - name: reloading firewall 
   command: firewall-cmd --reload
 
-#- name: inserting lines into httpd
- # template: src=httpd.conf.j2 dest=/etc/httpd/conf/httpd.conf
  
 
 
