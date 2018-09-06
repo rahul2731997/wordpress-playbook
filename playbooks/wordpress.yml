@@ -1,0 +1,43 @@
+---
+- hosts: all
+  roles:
+    - common
+
+- hosts: haproxy
+  roles:
+    - haproxy
+
+- hosts: web
+  roles:
+    - php
+    - wordpress
+    - httpd
+  tasks:
+    - name: installing php
+      package: name=php state=present
+
+    - name: restarting firewalld
+      service: name=firewalld state=restarted
+    - name: disable selinux
+      selinux: state=disabled 
+- hosts: db
+  roles: 
+    - mariadb
+  tasks:
+    - name: restarting mariadb
+      service: name=mariadb.service state=restarted
+    - name: restarting firewalld
+      service: name=firewalld service=restarted
+    - name: stop selinux
+      selinux: state=disabled
+- hosts: web
+  tasks:
+    - name: restart httpd
+      service: name=httpd state=restarted
+
+- hosts: haproxy
+  tasks:
+    - name: restarting haproxy
+      service: name=haproxy state=restarted
+    - name: disable selinux
+      selinux: state=disabled

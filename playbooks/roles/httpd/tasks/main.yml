@@ -1,0 +1,18 @@
+---
+# tasks file for httpd
+
+- name: installing httpd
+  package: name=httpd state=present
+
+- name: starting httpd
+  service: name=httpd state=started
+
+- name: adding port
+  firewalld:
+    service: http
+    permanent: true
+    state: enabled
+    zone: public
+
+- name: reloading firewall 
+  command: firewall-cmd --reload
